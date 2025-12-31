@@ -1,0 +1,26 @@
+services:
+  ai-llm:
+    image: ollama/ollama
+    container_name: ai-quiz-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    restart: unless-stopped
+
+  quiz-db:
+    image: pgvector/pgvector:pg16
+    container_name: postgres-pgvector
+    environment:
+      POSTGRES_DB: quizdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - quiz_db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  ollama_models:
+  quiz_db_data:

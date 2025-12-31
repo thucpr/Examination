@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: springai-ollama-llm
+
+  # ===============================
+  # MULTIPART UPLOAD LIMIT
+  # ===============================
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  server:
+    port: 1111
+
+
+  # ===============================
+  # DATASOURCE (PostgreSQL)
+  # ===============================
+  datasource:
+    url: jdbc:postgresql://localhost:5433/quizdb
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  # ===============================
+  # LIQUIBASE (⚠️ PATH QUAN TRỌNG)
+  # ===============================
+  liquibase:
+    enabled: true
+    change-log: classpath:db/liquibase-changelog.xml
+
+  # ===============================
+  # SPRING AI
+  # ===============================
+  ai:
+    vectorstore:
+      pgvector:
+        remove-existing-vector-store-table: true
+        initialize-schema: true
+
+    ollama:
+      init: true
+      chat:
+        options:
+          model: llama3.2:3b
+          temperature: 0.9
+        pull-model-strategy: never
+      embedding:
+        options:
+          model: nomic-embed-text:latest
